@@ -55,11 +55,11 @@ public class Redis {
         if (!"".equals(password)) jedis.auth(password);
     }
 
-    public Jedis getJedis() {
+    public Jedis getJedis() throws Exception  {
         return jedis;
     }
 
-    public boolean isConnected() {
+    public boolean isConnected()  {
         if (jedis == null) {
             return false;
         }
@@ -78,41 +78,41 @@ public class Redis {
         this.target = target;
     }
 
-    public String getInfo() {
+    public String getInfo() throws Exception {
         return jedis.info();
     }
 
-    public String getDir() {
+    public String getDir() throws Exception  {
         List<String> result = jedis.configGet("dir");
         return result.size() > 1 ? result.get(1) : "";
     }
 
-    public String getDBFilename() {
+    public String getDBFilename() throws Exception  {
         List<String> result = jedis.configGet("dbfilename");
         return result.size() > 1 ? result.get(1) : "";
     }
 
-    public String setDir(String dir) {
+    public String setDir(String dir) throws Exception  {
         return jedis.configSet("dir", dir);
     }
 
-    public String setDBFilename(String dbFilename) {
+    public String setDBFilename(String dbFilename) throws Exception  {
         return jedis.configSet("dbfilename", dbFilename);
     }
 
-    public String setKey(String key, String value) {
+    public String setKey(String key, String value) throws Exception  {
         return jedis.set(key, value);
     }
 
-    public long delKey(String key) {
+    public long delKey(String key) throws Exception  {
         return jedis.del(key);
     }
 
-    public String save() {
+    public String save() throws Exception {
         return jedis.save();
     }
 
-    public String exec(String cmd) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public String exec(String cmd) throws Exception {
         String[] fields = Utils.fields(cmd);
         String command = fields[0].toUpperCase();
         Object response = jedis.sendCommand(new ModuleCommand(command),Arrays.copyOfRange(fields, 1, fields.length));
@@ -166,7 +166,7 @@ public class Redis {
         return "";
     }
 
-    public String getVersion(){
+    public String getVersion() throws Exception {
         String redisInfo = getInfo();
         return getVersion(redisInfo);
     }
@@ -184,7 +184,7 @@ public class Redis {
         return "";
     }
 
-    public String getOsName(){
+    public String getOsName() throws Exception {
         String redisInfo = getInfo();
         return getVersion(redisInfo);
     }

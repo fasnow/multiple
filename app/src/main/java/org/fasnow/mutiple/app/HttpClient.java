@@ -9,6 +9,14 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
 public class HttpClient {
+    private static int defaultTimeout;
+    public static void setTimout(int timeout){
+        defaultTimeout = timeout;
+    }
+
+    public static int getTimout(){
+        return defaultTimeout;
+    }
 
     public static OkHttpClient.Builder newHttpClientBuilder() {
         try {

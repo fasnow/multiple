@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import okhttp3.*;
+import org.fasnow.mutiple.app.HttpClient;
 import org.fasnow.mutiple.app.Log;
 import org.fasnow.mutiple.app.Utils;
 import org.fasnow.mutiple.app.ui.Instance;
@@ -142,7 +143,7 @@ public class MainController {
 
     @FXML
     void updateTimeoutBtnAction(ActionEvent event) {
-        setTimeout(Long.valueOf(timeoutField.getText()),TimeUnit.SECONDS);
+        setTimeout(Integer.parseInt(timeoutField.getText()),TimeUnit.SECONDS);
     }
 
     public TextArea getLogTextArea(){
@@ -173,7 +174,8 @@ public class MainController {
         client=builder.build();
     }
 
-    public void setTimeout(Long timeout, TimeUnit unit){
+    public void setTimeout(int timeout, TimeUnit unit){
+        HttpClient.setTimout(timeout);
         client= client.newBuilder().connectTimeout(timeout,unit).build();
     }
 }

@@ -9,6 +9,9 @@ import javafx.stage.FileChooser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.*;
@@ -138,6 +141,31 @@ public class Utils {
             builder.append(str);
         }
         return builder.toString();
+    }
+
+    public static List<String> getHostAddresses() throws SocketException {
+        List<String> hostAddresses= new ArrayList<>();
+        Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+        while (networkInterfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = networkInterfaces.nextElement();
+
+            // 获取该网络接口上的所有IP地址
+            Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+
+            while (inetAddresses.hasMoreElements()) {
+                InetAddress inetAddress = inetAddresses.nextElement();
+
+                // 过滤掉IPv6地址
+//                    if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
+//                System.out.println("网络接口: " + networkInterface.getDisplayName());
+//                System.out.println("IP地址: " + inetAddress.getHostAddress());
+                hostAddresses.add(inetAddress.getHostAddress());
+                System.out.println();
+//                    }
+            }
+        }
+        return hostAddresses;
     }
 }
 

@@ -241,6 +241,5 @@
             <artifactId>lettuce-core</artifactId>
             <version>5.3.1.RELEASE</version>
         </dependency>
-
     </dependencies>
 </project>

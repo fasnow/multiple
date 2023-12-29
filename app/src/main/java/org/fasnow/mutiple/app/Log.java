@@ -27,6 +27,12 @@ public class Log {
     }
 
     public static String formatStdout(String msg){
+        if(msg.split("\n").length==1){
+            return String.format("[%s] [info] %s\n\n",
+                    getFormatDate(),
+                    msg
+            );
+        }
         msg = msg.replaceAll("\n","\n\t");
         String breakSep = "";
         if(msg.length()>2 && msg.substring(0,msg.length()-2).contains("\n")){
@@ -51,6 +57,25 @@ public class Log {
     }
 
     public static String formatStderr(Exception e){
+        String msg = "";
+//        switch (e.getMessage()){
+//            case "ERR invalid password":
+//                msg = "ERR invalid password";
+//                break;
+//            case "Failed to connect to any host resolved for DNS name.":
+//                msg="Failed to connect to any host resolved for DNS name.";
+//                break;
+//            case "NOAUTH Authentication required.":
+//                msg="NOAUTH Authentication required.";
+//                break;
+//
+//        }
+        msg=e.getMessage();
+        if(!"".equals(msg)){
+            return String.format("[%s] [error] %s\n",getFormatDate(),
+                    msg+"\n"
+            );
+        }
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter);
         e.printStackTrace(printWriter);
@@ -58,6 +83,11 @@ public class Log {
         String out = tmp.substring(0,tmp.length()-1);
         return String.format("[%s] [error]\n\t%s\n",getFormatDate(),
                 out.replace("\n", "\n\t")
+        );
+    }
+    public static String formatStderr(String msg){
+        return String.format("[%s] [error]\n\t%s\n",getFormatDate(),
+                msg
         );
     }
     private static String[] fields(String s) {
