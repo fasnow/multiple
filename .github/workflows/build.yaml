@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -28,7 +28,7 @@ jobs:
           name: Multiple-*.jar
 
   publish:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout Repository
