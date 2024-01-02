@@ -30,7 +30,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: Multiple-${{ steps.get_version.outputs.version }}.jar
+          path: Multiple-*.jar
 
   publish:
     runs-on: windows-latest
