@@ -18,6 +18,7 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '8'
+          javafx: true  
 
       - name: Build
         run: mvn clean package
