@@ -37,6 +37,6 @@ build/
 ### Mac OS ###
 .DS_Store
 
-/**/Mutiple*.jar
-/**/mutiple*.jar
-/**/mvnw*
+Mutiple*.jar
+mutiple*.jar
+mvnw*
