@@ -1,0 +1,53 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '8'
+
+      - name: Build
+        run: mvn clean package
+
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Multiple-*.jar
+
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Multiple-*.jar
+          path: release/
+
+      - name: dir
+        run: dir && dir release
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            release/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.MULTIPLE_ACCESS_TOKEN }}

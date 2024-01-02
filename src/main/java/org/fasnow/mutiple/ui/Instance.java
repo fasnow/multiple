@@ -19,7 +19,7 @@ public class Instance {
     static {
         FXMLLoader loader = new FXMLLoader(Application.class.getResource("/ui/main.fxml"));
         try {
-            Scene scene=new Scene(loader.load(),800, 600);
+            Scene scene=new Scene(loader.load());
             scene.getStylesheets().add(Objects.requireNonNull(Application.class.getResource("/ui/button.css")).toExternalForm());
             mainInstance.setScene(scene);
         } catch (IOException e) {
@@ -43,9 +43,6 @@ public class Instance {
         stage.setScene(new Scene(loader.load(), 1100, 600));
         stage.setTitle("Nacos");
         stage.initModality(Modality.NONE);//不阻塞主窗口
-        NacosController nacosController = loader.getController();
-        nacosController.setMainController(mainController);
-        Nacos.setMainController(mainController);
         return stage;
     }
 
@@ -55,8 +52,6 @@ public class Instance {
         stage.setScene(new Scene(loader.load(), 1100, 600));
         stage.setTitle("Redis");
         stage.initModality(Modality.NONE);//不阻塞主窗口
-        RedisController redisController = loader.getController();
-        redisController.setMainController(mainController);
         Redis.setMainController(mainController);
         return stage;
     }

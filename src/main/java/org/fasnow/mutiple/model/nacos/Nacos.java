@@ -1,19 +1,24 @@
 package org.fasnow.mutiple.model.nacos;
 
+import com.alibaba.nacos.v2.config.server.model.ConfigInfo;
+import com.alibaba.nacos.v2.console.model.Namespace;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import okhttp3.*;
+import okhttp3.FormBody;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.fasnow.mutiple.HttpClient;
 import org.fasnow.mutiple.Jwt;
 import org.fasnow.mutiple.Utils;
 import org.fasnow.mutiple.entity.Result;
-import com.alibaba.nacos.v2.config.server.model.ConfigInfo;
-import com.alibaba.nacos.v2.console.model.Namespace;
-import org.fasnow.mutiple.ui.controller.MainController;
 import org.fasnow.mutiple.vul.Vul;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Nacos implements Vuls {
     public static final HashMap<String, Vul> vuls = new LinkedHashMap<>();
@@ -66,7 +71,6 @@ public class Nacos implements Vuls {
 //        );
     }
     public  static final String PLUGIN_NAME = "nacos";
-    private static MainController mainController;
     private String target;
     private String version;
     public Nacos(){
@@ -81,10 +85,6 @@ public class Nacos implements Vuls {
         return target;
     }
 
-    public static void setMainController(MainController controller){
-        mainController =controller;
-    }
-
     private String addDefaultContextPath(String path, boolean add){
         return target+(add ? "/nacos": "")+ path;
     }
@@ -96,7 +96,7 @@ public class Nacos implements Vuls {
                 .get()
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         return new Result(body.contains("USERNAME")&&body.contains("PASSWORD"),body);
     }
@@ -108,7 +108,7 @@ public class Nacos implements Vuls {
                 .get()
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         return new Result(body.contains("totalCount"),body);
     }
@@ -127,7 +127,7 @@ public class Nacos implements Vuls {
                 .post(formBody)
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         return new Result(body.contains(tokenField),body);
     }
@@ -145,7 +145,7 @@ public class Nacos implements Vuls {
                 .header("User-Agent",Utils.USER_AGENT)
                 .header("Authorization",authorization)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         return new Result(authorization.equals(response.header("Authorization")),response.body().string());
     }
 
@@ -187,7 +187,7 @@ public class Nacos implements Vuls {
                 .get()
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(response.body().string());
         version = jsonNode.get("version").asText();
@@ -204,7 +204,7 @@ public class Nacos implements Vuls {
                 .post(formBody)
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         return new Result(body.contains("create user ok!"),body);
     }
@@ -215,7 +215,7 @@ public class Nacos implements Vuls {
                 .delete()
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         return new Result(body.contains("delete user ok!"),body);
     }
@@ -230,7 +230,7 @@ public class Nacos implements Vuls {
                 .put(formBody)
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         return new Result(body.contains("update user ok!"),body);
     }
@@ -244,7 +244,7 @@ public class Nacos implements Vuls {
             builder = builder.header("Authorization",adaptAuthorization(authorization));
         }
         Request request = builder.build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> jsonMap = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {});
@@ -262,7 +262,7 @@ public class Nacos implements Vuls {
             builder = builder.header("Authorization",adaptAuthorization(authorization));
         }
         Request request = builder.build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> jsonMap = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {});
@@ -277,7 +277,7 @@ public class Nacos implements Vuls {
                 .get()
                 .header("User-Agent","Nacos-Server")
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> jsonMap = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {});
@@ -292,7 +292,7 @@ public class Nacos implements Vuls {
                 .get()
                 .header("User-Agent","Nacos-Server")
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         String body = response.body().string();
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> jsonMap = objectMapper.readValue(body, new TypeReference<Map<String, Object>>() {});
@@ -315,7 +315,7 @@ public class Nacos implements Vuls {
                 .post(formBody)
                 .header("User-Agent",Utils.USER_AGENT)
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         if(response.code()!=200){
             throw new Exception(response.body().string());
         }
@@ -338,7 +338,7 @@ public class Nacos implements Vuls {
                     .header("User-Agent",Utils.USER_AGENT)
                     .header("Authorization","Bearer "+authorization)
                     .build();
-            Response response = mainController.httpCall(PLUGIN_NAME,request);
+            Response response = HttpClient.client.newCall(request).execute();
             if(response.code()==200){
                 return true;
             }
@@ -357,7 +357,7 @@ public class Nacos implements Vuls {
                 .header("User-Agent",Utils.USER_AGENT)
                 .header("Authorization",adaptAuthorization(authorization))
                 .build();
-        Response response = mainController.httpCall(PLUGIN_NAME,request);
+        Response response = HttpClient.client.newCall(request).execute();
         if(response.code()==403){
             return false;
         }

@@ -152,7 +152,7 @@ public class RedisController {
     @FXML
     private TextField localportField;
 
-    private MainController mainController;
+//    private MainController mainController;
 
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -204,13 +204,13 @@ public class RedisController {
 //        exportBtn.setVisible(false);
         Utils.setGlobalFocusTraversal(false,basePanel);
     }
-    public void setMainController(MainController controller){
-        mainController = controller;
-    }
-
-    public MainController getMainController(){
-        return mainController;
-    }
+//    public void setMainController(MainController controller){
+//        mainController = controller;
+//    }
+//
+//    public MainController getMainController(){
+//        return mainController;
+//    }
 
     public void submitBtnAction(Event event){
 //        Redis redisInstance = new Redis();

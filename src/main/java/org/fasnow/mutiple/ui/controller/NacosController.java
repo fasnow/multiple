@@ -116,7 +116,7 @@ public class NacosController {
 
     private static final Map<String,String> vulNameMethodMap = new HashMap<>();
 
-    private MainController mainController;
+//    private MainController mainController;
 
     private List<String> targets = new ArrayList<>();
 
@@ -150,10 +150,6 @@ public class NacosController {
 
         exportBtn.setVisible(false);
         Utils.setGlobalFocusTraversal(false,basePanel);
-    }
-
-    public void setMainController(MainController controller){
-        this.mainController = controller;
     }
 
     public void submitBtnAction(Event event){
@@ -265,11 +261,6 @@ public class NacosController {
         }
     }
 
-
-    public MainController getMainController(){
-       return mainController;
-    }
-
     public TextArea getLogTextarea(){
         return detectLog ;
     }
@@ -285,7 +276,6 @@ public class NacosController {
                 Result r = nacosInstance.addUser(username,password);
                 Platform.runLater(()->logArea1.appendText(Log.formatStdout(r.getFeatureField())));
             } catch (Exception e) {
-                Platform.runLater(()->mainController.getLogTextArea().appendText(Log.formatStderrWithPlugin(Nacos.PLUGIN_NAME,e)));
                 Platform.runLater(()->logArea1.appendText(Log.formatStderr(e)));
             }
             return null;
@@ -305,7 +295,6 @@ public class NacosController {
                 Result r = nacosInstance.deleteUser(username);
                 Platform.runLater(()->logArea1.appendText(Log.formatStdout(r.getFeatureField())));
             } catch (Exception e) {
-                Platform.runLater(()->mainController.getLogTextArea().appendText(Log.formatStderrWithPlugin(Nacos.PLUGIN_NAME,e)));
                 Platform.runLater(()->logArea1.appendText(Log.formatStderr(e)));
             }
             return null;
@@ -325,7 +314,6 @@ public class NacosController {
                 Result r = nacosInstance.resetPassword(username,password);
                 Platform.runLater(()->logArea1.appendText(Log.formatStdout(r.getFeatureField())));
             } catch (Exception e) {
-                Platform.runLater(()->mainController.getLogTextArea().appendText(Log.formatStderrWithPlugin(Nacos.PLUGIN_NAME,e)));
                 Platform.runLater(()->logArea1.appendText(Log.formatStderr(e)));
             }
             return null;

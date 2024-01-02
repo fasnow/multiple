@@ -174,7 +174,7 @@ public class MainController {
         client=builder.build();
     }
 
-    public void setTimeout(int timeout, TimeUnit unit){
+    public synchronized void setTimeout(int timeout, TimeUnit unit){
         HttpClient.setDefaultTimeout(timeout);
         client= client.newBuilder().connectTimeout(timeout,unit).build();
     }

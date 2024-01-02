@@ -7,6 +7,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.TimeUnit;
 
 public class HttpClient {
     private static int defaultTimeout = 5;
@@ -17,6 +18,11 @@ public class HttpClient {
     public static int getDefaultTimout(){
         return defaultTimeout;
     }
+
+    public static OkHttpClient client = HttpClient
+            .newHttpClientBuilder()
+            .connectTimeout(HttpClient.getDefaultTimout(), TimeUnit.SECONDS)
+            .build();
 
     public static OkHttpClient.Builder newHttpClientBuilder() {
         try {
