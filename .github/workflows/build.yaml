@@ -17,8 +17,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
-          java-version: '8'
-          javafx: true  
+          java-version: '11'
 
       - name: Build
         run: mvn clean package
@@ -30,6 +29,8 @@ jobs:
 
   publish:
     runs-on: windows-latest
+    needs:
+      - build
 
     steps:
       - name: Checkout Repository
