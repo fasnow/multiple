@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up JDK 8
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -22,11 +22,15 @@ jobs:
       - name: Build
         run: mvn clean package
 
+      - name: Get version from pom.xml
+        id: get_version
+        run: echo "::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)"
+
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v2
         with:
-          name: Multiple-*.jar
-          path: ./
+          name: artifact
+          path: Multiple-${{ steps.get_version.outputs.version }}.jar
 
   publish:
     runs-on: windows-latest
@@ -40,7 +44,7 @@ jobs:
       - name: Download Build Artifact
         uses: actions/download-artifact@v3
         with:
-          name: Multiple-*.jar
+          name: artifact
           path: release/
 
       - name: dir
